@@ -13,7 +13,9 @@ import (
 
 const (
 	distrolessBase = "ghcr.io/kaito-project/aikit/base:latest"
-	localAIVersion = "v3.6.0"
+	// Fix for https://github.com/kaito-project/aikit/issues/638
+	// Contains fix for multi-type JSON schema arrays (mudler/LocalAI#6495)
+	localAIVersion = "sha-639ecb5"
 	localAIRepo    = "ghcr.io/kaito-project/aikit/localai:"
 	cudaVersion    = "12-5"
 )
@@ -141,7 +143,7 @@ func installCuda(c *config.InferenceConfig, s llb.State, merge llb.State) (llb.S
 
 // addLocalAI adds the LocalAI binary to the image.
 func addLocalAI(s llb.State, merge llb.State, platform specs.Platform) (llb.State, llb.State, error) {
-	// Map architectures to OCI artifact references & internal artifact filenames
+	// Map architectures to OCI artifact references
 	artifactRefs := map[string]struct {
 		Ref string
 	}{
